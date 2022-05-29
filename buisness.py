@@ -3,7 +3,7 @@ import shutil
 
 from pprint import pprint
 
-def get_files_of_extension(directory:Path, extension:str) -> Path:
+def get_files_of_extension(directory:Path, extension:str) -> list[Path]:
     ext = f'*.{extension}'
     p = directory.glob(ext)
     files = [x for x in p if x.is_file()]

@@ -32,17 +32,50 @@ def rename_layout_as_file_name():
         #doc = acad.Documents.Open(filepath)
         print("there is no running autocad or file opened")
 
+    try:
+        for doc in acad.Application.Documents:
+            file_name = doc.Name[:-4]
+            for layout in doc.Layouts:
+                if "Model" not in layout.Name:
+                    try:
+                        layout.Name = file_name
+                        print(layout.Name)
+                        break
+                    except:
+                        print("Error in renaming file", file_name)
+    finally:
+        acad = None
 
-    for doc in acad.Application.Documents:
-        file_name = doc.Name[:-4]
-        for layout in doc.Layouts:
-            if "Model" not in layout.Name:
-                try:
-                    layout.Name = file_name
-                    print(layout.Name)
-                    break
-                except:
-                    print("Error in renaming file", file_name)
+
+def get_layout_and_file_name_list():
+
+    try: #Get AutoCAD running instance
+        acad = GetActiveObject("AutoCAD.Application.24")
+        state = True
+    except(OSError,COMError): #If autocad isn't running, open it
+        acad = CreateObject("AutoCAD.Application.24", dynamic=True)
+        state = False
+
+    if state: #If you have only 1 opened drawing
+        doc = acad.Documents[0]
+    else:
+        #filepath = r"C:\Users\mali\Downloads\DTV\DTV\backup\B05-DWG-DTV-DDD-ST-SSC-0003-00.dwg" #Replace it with the actual drawing path
+        #doc = acad.Documents.Open(filepath)
+        print("there is no running autocad or file opened")
+
+    try:
+        for doc in acad.Application.Documents:
+            file_name = doc.Name[:-4]
+            print(file_name)
+            for layout in doc.Layouts:
+                if "Model" not in layout.Name:
+                    try:
+                        print("\t",layout.Name)
+                        
+                    except:
+                        print("Error in renaming file", file_name)
+    finally:
+        acad = None
 
 
 def main():

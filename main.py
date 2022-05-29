@@ -2,7 +2,7 @@ import db
 import pathlib
 import buisness
 
-from autocadhelper_com import rename_layout_as_file_name 
+from autocadhelper_com import rename_layout_as_file_name , get_layout_and_file_name_list
 
 def show_title():
     print("The Mini File Manager Program")
@@ -13,8 +13,10 @@ def show_title():
 def show_menu():
     print("COMMAND MENU")
     print("dir - Assign Working Directory")
+    print("lst - Show File List in Working Directory")
     print("rev - Change File Revision")
     print("lay - Update Autocad Layout Name as Drawing Name")
+    print("laylist - Print List Of Autocad files and layouts")
     print("m - Show Menu")
     print("x = Exit Program")
 
@@ -51,9 +53,19 @@ def change_file_revision(directory):
     except:
         print("\n!Error in change_file_revision")
 
+def print_layouts_names():
+    get_layout_and_file_name_list()
 
 def update_cad_layouts():
     rename_layout_as_file_name()
+
+def list_all_files_in_working_directory(directory):
+    try:
+        file_extension = input("what is the files extension to change the revision? (dwg\\pdf)\n")
+        files = buisness.get_files_of_extension(directory,file_extension)
+        [print(f.resolve()) for f in files]
+    except:
+        print("\n!Error in Getting files from working directory")
 
 def main():
     show_title()
@@ -67,10 +79,14 @@ def main():
         command = input("Command: ").lower()
         if command == "dir":
             wdir = change_working_directory()
+        if command == "lst":
+            list_all_files_in_working_directory(wdir)
         elif command == "rev":
             change_file_revision(wdir)
         elif command == "lay":
             update_cad_layouts()
+        elif command == "laylist":
+            print_layouts_names()
         elif command == "m":
             show_menu()
         elif command == "x":
