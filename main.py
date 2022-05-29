@@ -2,6 +2,8 @@ import db
 import pathlib
 import buisness
 
+from autocadhelper_com import rename_layout_as_file_name 
+
 def show_title():
     print("The Mini File Manager Program")
     print()
@@ -12,6 +14,8 @@ def show_menu():
     print("COMMAND MENU")
     print("dir - Assign Working Directory")
     print("rev - Change File Revision")
+    print("lay - Update Autocad Layout Name as Drawing Name")
+    print("m - Show Menu")
     print("x = Exit Program")
 
 def get_int(prompt, maxNum = 1000):
@@ -48,6 +52,9 @@ def change_file_revision(directory):
         print("\n!Error in change_file_revision")
 
 
+def update_cad_layouts():
+    rename_layout_as_file_name()
+
 def main():
     show_title()
     show_menu()
@@ -62,7 +69,10 @@ def main():
             wdir = change_working_directory()
         elif command == "rev":
             change_file_revision(wdir)
-
+        elif command == "lay":
+            update_cad_layouts()
+        elif command == "m":
+            show_menu()
         elif command == "x":
             print("Bye!")
             break
